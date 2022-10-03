@@ -1,0 +1,33 @@
+{
+  "name": "fullstackopen-blog",
+  "version": "1.0.0",
+  "description": "Part 4 of fullOpenStack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graindeweb/FullstackOpen-blog.git"
+  },
+  "author": "Baptiste PFEFFERKORN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/graindeweb/FullstackOpen-blog/issues"
+  },
+  "homepage": "https://github.com/graindeweb/FullstackOpen-blog#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "http": "0.0.1-security",
+    "mongoose": "^6.6.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "eslint": "^8.24.0"
+  }
+}
