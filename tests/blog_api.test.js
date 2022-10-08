@@ -79,7 +79,14 @@ describe("CREATE blog API", () => {
     const { body: newBlogInDB } = await api.post("/api/blogs").send(newBlogWithoutLikes)
 
     expect(newBlogInDB.likes).toBe(0)
+  })
 
+  test("title and url are mandatory", async () => {
+    const { title, url, ...newBlogWithoutMandatory } = newBlog
+    await api
+      .post("/api/blogs")
+      .send(newBlogWithoutMandatory)
+      .expect(400)
   })
 })
 
