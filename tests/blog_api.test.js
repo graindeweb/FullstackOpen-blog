@@ -73,6 +73,14 @@ describe("CREATE blog API", () => {
     expect(url).toBe(newBlog.url)
     expect(likes).toBe(newBlog.likes)
   })
+
+  test("new blog without likes has default 0", async () => {
+    const { likes, ...newBlogWithoutLikes } = newBlog
+    const { body: newBlogInDB } = await api.post("/api/blogs").send(newBlogWithoutLikes)
+
+    expect(newBlogInDB.likes).toBe(0)
+
+  })
 })
 
 afterAll(() => {
