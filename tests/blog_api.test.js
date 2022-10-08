@@ -30,6 +30,13 @@ describe("GET blogs API", () => {
 
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
+
+  test("blog is identified by property id", async () => {
+    const response = await api.get("/api/blogs")
+
+    expect(response.body[0].id).toBeDefined()
+    expect(response.body[0]._id).not.toBeDefined()
+  })
 })
 
 afterAll(() => {
