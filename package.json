@@ -4,10 +4,10 @@
   "description": "Part 4 of fullOpenStack",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,8 @@
   "devDependencies": {
     "eslint": "^8.24.0",
     "jest": "^29.1.2",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.0"
   },
   "jest": {
     "testEnvironment": "node"
