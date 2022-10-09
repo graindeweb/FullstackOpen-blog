@@ -97,6 +97,28 @@ describe("DELETE blog API", () => {
   })
 })
 
+describe("UPDATE blog API", () => {
+  test("bad id format returns 400", async () => {
+    const response = await api.put("/api/blogs/unknownid")
+
+    expect(response.status).toBe(400)
+    expect(response.body.error).toBe("Malformatted id")
+  })
+
+  test("blog is updated", async () => {
+    const { body: blogList } = await api.get("/api/blogs")
+    const blogToUpdate = blogList[0]
+    const { body: updatedBlog } = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({
+        likes: blogList[0].likes + 1,
+      })
+      .expect(200)
+
+    expect(updatedBlog.likes).toBe(blogList[0].likes + 1)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

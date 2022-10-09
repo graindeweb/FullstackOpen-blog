@@ -43,4 +43,8 @@ const initialBlogs = [
   },
 ]
 
-module.exports = { initialBlogs }
+const unknownId = () => {
+  return "634337006a827d51e88e8c60"
+}
+
+module.exports = { initialBlogs, unknownId }
