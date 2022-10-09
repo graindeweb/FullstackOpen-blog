@@ -9,13 +9,7 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  await Promise.all(
-    helper.initialBlogs.map((blog) => {
-      const blogEntry = new Blog(blog)
-      return blogEntry.save()
-    })
-  )
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 describe("GET blogs API", () => {
@@ -83,10 +77,23 @@ describe("CREATE blog API", () => {
 
   test("title and url are mandatory", async () => {
     const { title, url, ...newBlogWithoutMandatory } = newBlog
-    await api
-      .post("/api/blogs")
-      .send(newBlogWithoutMandatory)
-      .expect(400)
+    await api.post("/api/blogs").send(newBlogWithoutMandatory).expect(400)
+  })
+})
+
+describe("DELETE blog API", () => {
+  test("unknown id returns 204 (idempotence)", async () => {
+    await api.delete("/api/blogs/6341fe8b95fa89979e0136d7").expect(204)
+  })
+
+  test("blog is removed from initial List of blogs", async () => {
+    const { body: blogList } = await api.get("/api/blogs")
+    const blogToDelete = blogList[0]
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    const { body: newBlogList } = await api.get("/api/blogs")
+    expect(newBlogList).toHaveLength(helper.initialBlogs.length - 1)
+    expect(newBlogList.map((n) => n.title)).not.toContain(blogToDelete.title)
   })
 })
 

@@ -12,7 +12,16 @@ router.post("/", async (request, response, next) => {
   try {
     const result = await blog.save()
     response.status(201).json(result)
-  } catch(err) {
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete("/:id", async (request, response, next) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } catch (err) {
     next(err)
   }
 })
