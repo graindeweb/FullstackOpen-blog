@@ -1,3 +1,5 @@
+const Blog = require("../models/blogs")
+
 const initialBlogs = [
   {
     title: "React patterns",
@@ -43,8 +45,21 @@ const initialBlogs = [
   },
 ]
 
-const unknownId = () => {
-  return "634337006a827d51e88e8c60"
+const unknownId = async () => {
+  const tempBlog = new Blog({
+    title: "temporary dummy blog",
+    author: "temp author",
+    url: "fake url",
+    likes: 0
+  })
+  await (await tempBlog.save()).remove()
+
+  return tempBlog.id
 }
 
-module.exports = { initialBlogs, unknownId }
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
+module.exports = { initialBlogs, unknownId, blogsInDb }

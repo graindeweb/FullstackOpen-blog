@@ -87,11 +87,11 @@ describe("DELETE blog API", () => {
   })
 
   test("blog is removed from initial List of blogs", async () => {
-    const { body: blogList } = await api.get("/api/blogs")
+    const blogList = await helper.blogsInDb()
     const blogToDelete = blogList[0]
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
 
-    const { body: newBlogList } = await api.get("/api/blogs")
+    const newBlogList = await helper.blogsInDb()
     expect(newBlogList).toHaveLength(helper.initialBlogs.length - 1)
     expect(newBlogList.map((n) => n.title)).not.toContain(blogToDelete.title)
   })
@@ -99,14 +99,29 @@ describe("DELETE blog API", () => {
 
 describe("UPDATE blog API", () => {
   test("bad id format returns 400", async () => {
-    const response = await api.put("/api/blogs/unknownid")
+    const response = await api.put(`/api/blogs/${helper.unknownId}`)
 
     expect(response.status).toBe(400)
     expect(response.body.error).toBe("Malformatted id")
   })
 
+  test("fails with status code 400 if data invalid", async () => {
+    const blogList = await helper.blogsInDb()
+    const blogToUpdate = blogList[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({
+        likes: "10a",
+      })
+      .expect(400)
+
+    const blogListAfterUpdate = await helper.blogsInDb()
+    expect(blogListAfterUpdate[0].likes).toBe(blogToUpdate.likes)
+  })
+
   test("blog is updated", async () => {
-    const { body: blogList } = await api.get("/api/blogs")
+    const blogList = await helper.blogsInDb()
     const blogToUpdate = blogList[0]
     const { body: updatedBlog } = await api
       .put(`/api/blogs/${blogToUpdate.id}`)

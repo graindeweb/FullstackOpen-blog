@@ -11,3 +11,14 @@ Content-type: application/json
     "url": "https://www.articlesbidons.fr/456123",
     "likes": 5
 }
+
+### Update likes of Blog article
+PUT http://localhost:3003/api/blogs/633b525ab1ec8ce08ee1580a
+Content-type: application/json
+
+{
+    "likes": "10s"
+}
+
+### Update likes of Blog article
+DELETE http://localhost:3003/api/blogs/633b525ab1ec8ce08ee1580a
