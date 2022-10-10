@@ -28,7 +28,9 @@ const mostBlogs = (blogs) => {
 }
 
 const mostLikes = (blogs) => {
-  const topBlogger = Object.entries(
+  if (blogs.length === 0) { return undefined }
+
+  const [author, likes] = Object.entries(
     blogs.reduce((acc, blog) => {
       return {
         ...acc,
@@ -37,10 +39,7 @@ const mostLikes = (blogs) => {
     }, {})
   ).sort((a, b) => b[1] - a[1])[0]
 
-  return topBlogger ? {
-    author: topBlogger[0],
-    likes: topBlogger[1],
-  } : undefined
+  return { author, likes }
 }
 
 module.exports = {
