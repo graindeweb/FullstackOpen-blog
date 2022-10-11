@@ -10,15 +10,15 @@ router.get("/", async (request, response) => {
 
 router.post("/", async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = request.user
 
-    if (!decodedToken.userId) {
+    if (null === user) {
       return response.status(401).json({ error: "token missing or invalid" })
     }
 
     const blog = new Blog(request.body)
 
-    const owner = await User.findById(decodedToken.userId)
+    const owner = await User.findById(user._id.toString())
     blog.user = owner._id
 
     const savedBlog = await blog.save()
@@ -33,13 +33,15 @@ router.post("/", async (request, response, next) => {
 
 router.delete("/:id", async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const user = request.user
     const blog = await Blog.findById(request.params.id)
-
-    if (!decodedToken.userId) {
-      return response.status(401).json({ error: "token missing or invalid" })
-    } else if (blog?.user?._id.toString() !== decodedToken.userId) {
-      return response.status(403).json({ error: "this blog does not belong to you!" })
+    if (blog) {
+      if (null === user) {
+        return response.status(401).json({ error: "token missing or invalid" })
+      } else if (blog?.user?._id.toString() !== user._id.toString()) {
+        return response.status(403).json({ error: "this blog does not belong to you!" })
+      }
+      blog.delete()
     }
 
     response.status(204).end()
