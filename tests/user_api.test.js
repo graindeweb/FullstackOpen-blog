@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const supertest = require("supertest")
+const bcrypt = require("bcrypt")
 
 const helper = require("./user_test_helper")
 const User = require("../models/users")
@@ -9,10 +10,20 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await User.deleteMany({})
+
+  const password = await bcrypt.hash("s3cr3tPa55wd", 10)
+  const user = new User({
+    name: "Frodon SAQUET",
+    username: "frodon.saquet@lacomte.nz",
+    password,
+  })
+
+  await user.save()
 })
 
 describe("GET users API", () => {
   test("returns empty array if no users", async () => {
+    await User.deleteMany({})
     const { body: users } = await api.get("/api/users").expect(200)
     expect(users).toEqual([])
   })

@@ -1,0 +1,24 @@
+### Get Users
+GET http://localhost:3003/api/users
+
+### Create User
+POST http://localhost:3003/api/users
+Content-type: application/json
+
+{
+    "name": "Laborum cupidatat",
+    "username": "jeansol2.patre@nenuphar.fr",
+    "password": "https://www.articlesbidons.fr/456123"
+}
+
+### Update name of User
+PUT http://localhost:3003/api/users/633b525ab1ec8ce08ee1580a
+Content-type: application/json
+
+{
+    "name": "John Doe"
+}
+
+### Delete User
+DELETE http://localhost:3003/api/users/633b525ab1ec8ce08ee1580a
+

@@ -9,6 +9,7 @@ Content-type: application/json
     "title": "Laborum cupidatat nostrud ullamco ad amet ut do.",
     "author": "Jean-Sol Patre",
     "url": "https://www.articlesbidons.fr/456123",
+    "userId": "6345ade7c6ed287b631bce53",
     "likes": 5
 }
 
