@@ -33,7 +33,15 @@ router.post("/", async (request, response, next) => {
 
 router.delete("/:id", async (request, response, next) => {
   try {
-    await Blog.findByIdAndRemove(request.params.id)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    const blog = await Blog.findById(request.params.id)
+
+    if (!decodedToken.userId) {
+      return response.status(401).json({ error: "token missing or invalid" })
+    } else if (blog?.user?._id.toString() !== decodedToken.userId) {
+      return response.status(403).json({ error: "this blog does not belong to you!" })
+    }
+
     response.status(204).end()
   } catch (err) {
     next(err)

@@ -22,5 +22,6 @@ Content-type: application/json
 }
 
 ### Delete likes of Blog article
-DELETE http://localhost:3003/api/blogs/633b525ab1ec8ce08ee1580a
+DELETE http://localhost:3003/api/blogs/6345e31456d3260c70b2276b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5zb2wzLnBhdHJlQG5lbnVwaGFyLmZyIiwidXNlcklkIjoiNjM0NWQyMGQwYThiNTIyYmFhM2U2N2RkIiwiaWF0IjoxNjY1NTI0MDUxfQ.RvhwVQqKcwJ_Fww0PXk8ktfElJJAnL7ujctZUh5LSoI
 
