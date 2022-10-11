@@ -1,0 +1,8 @@
+### Login
+POST http://localhost:3003/api/login
+Content-type: application/json
+
+{
+  "username": "jeansol3.patre@nenuphar.fr",
+  "password": "123456"
+}

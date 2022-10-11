@@ -7,8 +7,8 @@ Content-type: application/json
 
 {
     "name": "Laborum cupidatat",
-    "username": "jeansol2.patre@nenuphar.fr",
-    "password": "https://www.articlesbidons.fr/456123"
+    "username": "jeansol3.patre@nenuphar.fr",
+    "password": "123456"
 }
 
 ### Update name of User

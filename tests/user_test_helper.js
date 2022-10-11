@@ -1,4 +1,5 @@
 const User = require("../models/users")
+const bcrypt = require("bcrypt")
 
 const userList = [
   {
@@ -28,4 +29,12 @@ const usersInDb = async () => {
   return users.map((user) => user.toJSON())
 }
 
-module.exports = { userList, usersInDb }
+const addUserInDb = async (user) => {
+  const newUser = new User({
+    ...user,
+    password: await bcrypt.hash(user.password, 10),
+  })
+  return await newUser.save()
+}
+
+module.exports = { userList, usersInDb, addUserInDb }
