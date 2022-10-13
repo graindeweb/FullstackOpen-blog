@@ -1,7 +1,6 @@
 const router = require("express").Router()
 const Blog = require("../models/blogs")
 const User = require("../models/users")
-const jwt = require("jsonwebtoken")
 
 router.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { blogs: 0 })
@@ -34,11 +33,15 @@ router.post("/", async (request, response, next) => {
 router.delete("/:id", async (request, response, next) => {
   try {
     const user = request.user
+    if (null === user) {
+      return response.status(401).json({ error: "token missing or invalid" })
+    }
+
     const blog = await Blog.findById(request.params.id)
     if (blog) {
       if (null === user) {
         return response.status(401).json({ error: "token missing or invalid" })
-      } else if (blog?.user?._id.toString() !== user._id.toString()) {
+      } else if (blog.user?._id.toString() !== user._id.toString()) {
         return response.status(403).json({ error: "this blog does not belong to you!" })
       }
       blog.delete()
@@ -52,6 +55,11 @@ router.delete("/:id", async (request, response, next) => {
 
 router.put("/:id", async (request, response, next) => {
   try {
+    const user = request.user
+
+    if (null === user) {
+      return response.status(401).json({ error: "token missing or invalid" })
+    }
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, request.body, { new: true })
     response.json(updatedBlog)
   } catch (err) {
