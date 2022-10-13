@@ -7,7 +7,7 @@ router.get("/", async (request, response) => {
   response.json(users)
 })
 
-router.post("/", async (request, response, next) => {
+router.post("/", async (request, response) => {
   const user = request.body
   if (!(user.name && user.username && user.password)) {
     return response.status(400).json({
@@ -28,13 +28,9 @@ router.post("/", async (request, response, next) => {
 
   const pwdHash = await bcrypt.hash(user.password, 10)
 
-  try {
-    const newUser = new User({ ...user, password: pwdHash })
-    const savedUser = await newUser.save()
-    response.status(201).json(savedUser)
-  } catch (err) {
-    next(err)
-  }
+  const newUser = new User({ ...user, password: pwdHash })
+  const savedUser = await newUser.save()
+  response.status(201).json(savedUser)
 })
 
 module.exports = router

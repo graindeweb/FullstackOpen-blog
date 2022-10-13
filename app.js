@@ -2,6 +2,7 @@ const config = require("./utils/config.js")
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+require("express-async-errors")
 const middleware = require("./utils/middleware")
 
 const blogRouter = require("./controllers/blogs")
