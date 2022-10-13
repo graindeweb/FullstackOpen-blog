@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const Blog = require("../models/blogs")
 const User = require("../models/users")
 const supertest = require("supertest")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 const app = require("../app")
 const helper = require("./blog_test_helper")
 const userHelper = require("./user_test_helper")
@@ -13,8 +13,23 @@ let owners = []
 
 beforeEach(async () => {
   await User.deleteMany({})
-  owners = await User.insertMany(userHelper.userList.slice(0, 2))
-  jwtToken = jwt.sign({ username: owners[0].username, userId: owners[0]._id }, process.env.SECRET)
+  // First add some users in DB
+  const newUsers = await Promise.all(
+    userHelper.userList.slice(0, 2).map(async (user) => {
+      return {
+        ...user,
+        password: await bcrypt.hash(user.password, 10),
+      }
+    })
+  )
+  owners = await User.insertMany(newUsers)
+
+  // Log the first user in
+  const response = await api.post("/api/login").send({
+    username: userHelper.userList[0].username,
+    password: userHelper.userList[0].password,
+  })
+  jwtToken = response.body.jwtToken
 
   await Blog.deleteMany({})
   await Blog.insertMany(
